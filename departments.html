@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Departments Management</title>
+
+  <!-- IMPORTANT: Flask static CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header class="main-header">
+  <div class="container">
+    <h1>Departments Management</h1>
+    <p class="subtitle">Departments Records</p>
+
+    <!-- Use direct paths so you don't get BuildError if endpoint names differ -->
+    <div class="nav-container">
+      <a class="nav-btn" href="/">Home</a>
+      <a class="nav-btn" href="/guests">Guests</a>
+      <a class="nav-btn" href="/employees">Employees</a>
+      <a class="nav-btn active" href="/departments">Departments</a>
+      <a class="nav-btn" href="/rooms">Rooms</a>
+      <a class="nav-btn" href="/reservations">Reservations</a>
+      <a class="nav-btn" href="/services">Services</a>
+      <a class="nav-btn" href="/payments">Payments</a>
+      <a class="nav-btn" href="/reports">Reports</a>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- VIEW -->
+  <section class="card">
+    <div class="card-header">
+      <div class="card-title">All Departments</div>
+    </div>
+
+    <div class="card-body">
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Department ID</th>
+              <th>Name</th>
+              <th>Location</th>
+              <th>Manager ID</th>
+              <th>Hiring Date</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for d in departments %}
+            <tr>
+              <td>{{ d.dep_id }}</td>
+              <td>{{ d.department_name }}</td>
+              <td>{{ d.location }}</td>
+              <td>{{ d.mgr_id if d.mgr_id is not none else "-" }}</td>
+              <td>{{ d.hiring_date }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+
+        </table>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ADD -->
+  <section class="card">
+    <div class="card-header">
+      <div class="card-title">Add Department</div>
+    </div>
+
+    <div class="card-body">
+      <form action="/departments/add" method="POST">
+
+        <div class="form-group">
+          <label>Department ID</label>
+          <input type="number" name="dep_id" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label>Department Name</label>
+          <input type="text" name="department_name" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label>Location</label>
+          <input type="text" name="location" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label>Manager ID (optional)</label>
+          <input type="number" name="mgr_id" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label>Hiring Date</label>
+          <input type="date" name="hiring_date" class="form-control" required>
+        </div>
+
+        <div class="form-footer">
+          <button type="submit" class="btn btn-primary">Add Department</button>
+        </div>
+
+      </form>
+    </div>
+  </section>
+
+
+  <!-- UPDATE -->
+  <section class="card">
+    <div class="card-header">
+      <div class="card-title">Update Department</div>
+    </div>
+
+    <div class="card-body">
+      <form action="/departments/update" method="POST">
+
+        <div class="form-group">
+          <label>Department ID (to update)</label>
+          <input type="number" name="dep_id" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label>Department Name</label>
+          <input type="text" name="department_name" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label>Location</label>
+          <input type="text" name="location" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label>Manager ID (optional)</label>
+          <input type="number" name="mgr_id" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label>Hiring Date</label>
+          <input type="date" name="hiring_date" class="form-control" required>
+        </div>
+
+        <div class="form-footer">
+          <button type="submit" class="btn btn-success">Update Department</button>
+        </div>
+
+      </form>
+    </div>
+  </section>
+
+
+  <!-- DELETE -->
+  <section class="card">
+    <div class="card-header">
+      <div class="card-title">Delete Department</div>
+    </div>
+
+    <div class="card-body">
+      <form action="/departments/delete" method="POST">
+        <div class="form-group">
+          <label>Department ID (to delete)</label>
+          <input type="number" name="dep_id" class="form-control" required>
+        </div>
+
+        <div class="form-footer">
+          <button type="submit" class="btn btn-danger">Delete Department</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer class="main-footer">
+  <p>Hotel System © 2026</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reservations</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+  <header class="main-header">
+    <h1>Reservations Management</h1>
+    <p class="subtitle"><a href="{{ url_for('home') }}" style="color:white;">Home</a></p>
+  </header>
+
+  <main class="home-container">
+
+    <!-- VIEW -->
+    <section class="card">
+      <div class="card-header"><div class="card-title">All Reservations</div></div>
+      <div class="card-body table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Guest ID</th>
+              <th>Room ID</th>
+              <th>Check In</th>
+              <th>Check Out</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in reservations %}
+            <tr>
+              <td>{{ r.reservation_id }}</td>
+              <td>{{ r.guest_id }}</td>
+              <td>{{ r.room_id }}</td>
+              <td>{{ r.check_in }}</td>
+              <td>{{ r.check_out }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ADD -->
+    <section class="card">
+      <div class="card-header"><div class="card-title">Add Reservation</div></div>
+      <div class="card-body">
+        <form action="{{ url_for('add_reservation') }}" method="POST">
+          <div class="form-group">
+            <label>Reservation ID</label>
+            <input type="number" name="reservation_id" min="1" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label>Guest ID</label>
+            <input type="number" name="guest_id" min="1" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label>Room ID</label>
+            <input type="number" name="room_id" min="1" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label>Check In</label>
+            <input type="date" name="check_in" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label>Check Out</label>
+            <input type="date" name="check_out" class="form-control" required>
+          </div>
+
+          <div class="form-footer">
+            <button type="submit" class="btn btn-primary">Add Reservation</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- UPDATE -->
+    <section class="card">
+      <div class="card-header"><div class="card-title">Update Reservation</div></div>
+      <div class="card-body">
+        <form action="{{ url_for('update_reservation') }}" method="POST">
+          <div class="form-group">
+            <label>Reservation ID</label>
+            <input type="number" name="reservation_id" min="1" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label>Guest ID</label>
+            <input type="number" name="guest_id" min="1" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label>Room ID</label>
+            <input type="number" name="room_id" min="1" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label>Check In</label>
+            <input type="date" name="check_in" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label>Check Out</label>
+            <input type="date" name="check_out" class="form-control" required>
+          </div>
+
+          <div class="form-footer">
+            <button type="submit" class="btn btn-success">Update Reservation</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- DELETE -->
+    <section class="card">
+      <div class="card-header"><div class="card-title">Delete Reservation</div></div>
+      <div class="card-body">
+        <form action="{{ url_for('delete_reservation') }}" method="POST">
+          <div class="form-group">
+            <label>Reservation ID</label>
+            <input type="number" name="reservation_id" min="1" class="form-control" required>
+          </div>
+
+          <div class="form-footer">
+            <button type="submit" class="btn btn-danger">Delete Reservation</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="main-footer">
+    <p>Hotel System © 2026</p>
+  </footer>
+</div>
+
+</body>
+</html>

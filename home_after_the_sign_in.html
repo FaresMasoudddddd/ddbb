@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hotel Management System</title>
+
+    <!-- IMPORTANT: Flask static CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <header>
+        <h1>Hotel Management System</h1>
+        <p class="subtitle">Database Management Interface</p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <div class="nav-container">
+        <a class="nav-btn active" href="{{ url_for('home') }}">Home</a>
+        <a class="nav-btn" href="{{ url_for('guests') }}">Guests</a>
+        <a class="nav-btn" href="{{ url_for('employees') }}">Employees</a>
+        <a class="nav-btn" href="{{ url_for('departments') }}">Departments</a>
+        <a class="nav-btn" href="{{ url_for('rooms') }}">Rooms</a>
+        <a class="nav-btn" href="{{ url_for('reservations') }}">Reservations</a>
+        <a class="nav-btn" href="{{ url_for('services') }}">Services</a>
+        <a class="nav-btn" href="{{ url_for('payments') }}">Payments</a>
+        <a class="nav-btn" href="{{ url_for('reports') }}">Reports</a>
+    </div>
+
+    <!-- QUICK ACCESS CARD -->
+    <section class="card">
+        <div class="card-header">
+            <div class="card-title">Quick Access</div>
+        </div>
+
+        <div class="card-body">
+            <p>
+                Use the navigation buttons above to manage your hotel database records.
+                <br><br>
+                You can:
+            </p>
+            <ul style="margin-left: 20px; line-height: 1.8;">
+                <li>Manage guests and their information</li>
+                <li>Handle employee and department records</li>
+                <li>Control room availability and reservations</li>
+                <li>Track hotel services and payments</li>
+                <li>Generate summary reports</li>
+            </ul>
+        </div>
+    </section>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <p>Hotel System © 2026</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!-- templates/services.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Services</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+  <header class="main-header">
+    <h1>Services Management</h1>
+    <p class="subtitle"><a href="{{ url_for('home') }}" style="color:white;">Home</a></p>
+  </header>
+
+  <main class="home-container">
+
+    <!-- VIEW -->
+    <section class="card">
+      <div class="card-header"><div class="card-title">All Services</div></div>
+      <div class="card-body table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Spa</th>
+              <th>Room</th>
+              <th>Restaurant</th>
+              <th>Laundry</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for s in services %}
+            <tr>
+              <td>{{ s.service_id }}</td>
+              <td>{{ s.service_name }}</td>
+              <td>{{ s.price }}</td>
+              <td>{{ s.spa }}</td>
+              <td>{{ s.room }}</td>
+              <td>{{ s.restaurant }}</td>
+              <td>{{ s.laundry }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ADD -->
+    <section class="card">
+      <div class="card-header"><div class="card-title">Add Service</div></div>
+      <div class="card-body">
+        <form action="{{ url_for('add_service') }}" method="POST">
+
+          <div class="form-group">
+            <label>Service ID</label>
+            <input type="number" name="service_id" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label>Service Name</label>
+            <input type="text" name="service_name" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label>Price</label>
+            <input type="number" name="price" step="0.01" min="0" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label>Spa Flag (Y/N)</label>
+            <input type="text" name="spa" class="form-control" value="N" maxlength="1" required>
+          </div>
+
+          <div class="form-group">
+            <label>Room Flag (Y/N)</label>
+            <input type="text" name="room" class="form-control" value="N" maxlength="1" required>
+          </div>
+
+          <div class="form-group">
+            <label>Restaurant Flag (Y/N)</label>
+            <input type="text" name="restaurant" class="form-control" value="N" maxlength="1" required>
+          </div>
+
+          <div class="form-group">
+            <label>Laundry Flag (Y/N)</label>
+            <input type="text" name="laundry" class="form-control" value="N" maxlength="1" required>
+          </div>
+
+          <div class="form-footer">
+            <button type="submit" class="btn btn-primary">Add Service</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- UPDATE -->
+    <section class="card">
+      <div class="card-header"><div class="card-title">Update Service</div></div>
+      <div class="card-body">
+        <form action="{{ url_for('update_service') }}" method="POST">
+
+          <div class="form-group">
+            <label>Service ID</label>
+            <input type="number" name="service_id" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label>Service Name</label>
+            <input type="text" name="service_name" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label>Price</label>
+            <input type="number" name="price" step="0.01" min="0" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label>Spa Flag (Y/N)</label>
+            <input type="text" name="spa" class="form-control" value="N" maxlength="1" required>
+          </div>
+
+          <div class="form-group">
+            <label>Room Flag (Y/N)</label>
+            <input type="text" name="room" class="form-control" value="N" maxlength="1" required>
+          </div>
+
+          <div class="form-group">
+            <label>Restaurant Flag (Y/N)</label>
+            <input type="text" name="restaurant" class="form-control" value="N" maxlength="1" required>
+          </div>
+
+          <div class="form-group">
+            <label>Laundry Flag (Y/N)</label>
+            <input type="text" name="laundry" class="form-control" value="N" maxlength="1" required>
+          </div>
+
+          <div class="form-footer">
+            <button type="submit" class="btn btn-success">Update Service</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- DELETE -->
+    <section class="card">
+      <div class="card-header"><div class="card-title">Delete Service</div></div>
+      <div class="card-body">
+        <form action="{{ url_for('delete_service') }}" method="POST">
+          <div class="form-group">
+            <label>Service ID</label>
+            <input type="number" name="service_id" class="form-control" required>
+          </div>
+          <div class="form-footer">
+            <button type="submit" class="btn btn-danger">Delete Service</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="main-footer">
+    <p>Hotel System © 2026</p>
+  </footer>
+</div>
+
+</body>
+</html>

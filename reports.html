@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reports</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="main-header">
+    <h1>Generate Reports</h1>
+</header>
+
+<main class="home-container">
+
+    <section class="card">
+        <h2>Select Entity to Report</h2>
+        <form action="{{ url_for('generate_report') }}" method="POST">
+            <div class="form-group">
+                <label for="entity">Choose Entity:</label>
+                <select name="entity" id="entity" class="form-control" required>
+                    <option value="" disabled selected>Select an entity</option>
+                    <option value="guests">Guests</option>
+                    <option value="employees">Employees</option>
+                    <option value="rooms">Rooms</option>
+                    <option value="reservations">Reservations</option>
+                    <option value="services">Services</option>
+                    <option value="payments">Payments</option>
+                    <option value="departments">Departments</option>
+                </select>
+            </div>
+            <div class="form-footer">
+                <button type="submit" class="btn btn-primary">Generate Report</button>
+            </div>
+        </form>
+    </section>
+
+    {% if report %}
+    <section class="card">
+        <h2>Report: {{ report_name }}</h2>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        {% for col in report.columns %}
+                        <th>{{ col }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in report.data %}
+                    <tr>
+                        {% for item in row %}
+                        <td>{{ item }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+    {% endif %}
+
+</main>
+
+<footer class="main-footer">
+    <p>Hotel System © 2026</p>
+</footer>
+
+</body>
+</html>

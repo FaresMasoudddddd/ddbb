@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Database Schema</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .nav-container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .table-nav {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 10px;
+        }
+
+        .nav-btn {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .table-view {
+            display: none;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .table-view.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .table-title {
+            font-size: 2em;
+            color: #667eea;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .table-content {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .constraint {
+            display: inline-block;
+            padding: 4px 8px;
+            background: #e3f2fd;
+            color: #1976d2;
+            border-radius: 4px;
+            font-size: 0.85em;
+            margin: 2px;
+        }
+
+        .pk {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        .fk {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+
+        .nn {
+            background: #fce4ec;
+            color: #c2185b;
+        }
+
+        .datatype {
+            font-family: 'Courier New', monospace;
+            color: #555;
+            font-weight: 600;
+        }
+
+        .info-box {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .info-box h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏨 Hotel Database Schema</h1>
+            <p class="subtitle">Interactive Schema Viewer - Click on any table to view details</p>
+        </header>
+
+        <div class="nav-container">
+            <div class="table-nav" id="tableNav"></div>
+        </div>
+
+        <div id="tableViews"></div>
+    </div>
+
+    <script>
+        const tables = {
+            EMPLOYEE: {
+                columns: [
+                    { name: 'employee_id', type: 'NUMBER(8)', constraints: ['PRIMARY KEY'] },
+                    { name: 'emp_first_name', type: 'VARCHAR2(20)', constraints: ['NOT NULL'] },
+                    { name: 'emp_last_name', type: 'VARCHAR(20)', constraints: ['NOT NULL'] },
+                    { name: 'hours_worked', type: 'NUMBER(3)', constraints: ['CHECK (hours_worked > 0)'] },
+                    { name: 'start_date', type: 'DATE', constraints: ['NOT NULL'] },
+                    { name: 'hourly_rate', type: 'NUMBER(3)', constraints: ['CHECK (hourly_rate > 0)'] },
+                    { name: 'emp_date_of_birth', type: 'DATE', constraints: [] },
+                    { name: 'super_id', type: 'NUMBER(10)', constraints: ['FOREIGN KEY → Employee(employee_id)'] },
+                    { name: 'general_staff_flag', type: 'NUMBER(1)', constraints: ['CHECK (0 or 1)'] },
+                    { name: 'manager_flag', type: 'NUMBER(1)', constraints: ['CHECK (0 or 1)'] },
+                    { name: 'dep_id', type: 'NUMBER(8)', constraints: ['NOT NULL', 'FOREIGN KEY → Department(dep_id)'] }
+                ]
+            },
+            Department: {
+                columns: [
+                    { name: 'dep_id', type: 'NUMBER(8)', constraints: ['PRIMARY KEY'] },
+                    { name: 'department_name', type: 'VARCHAR2(20)', constraints: ['NOT NULL'] },
+                    { name: 'location', type: 'VARCHAR2(20)', constraints: ['NOT NULL'] },
+                    { name: 'mgr_id', type: 'NUMBER(8)', constraints: ['FOREIGN KEY → Employee(employee_id)'] },
+                    { name: 'hiring_date', type: 'DATE', constraints: ['NOT NULL'] }
+                ]
+            },
+            Service: {
+                columns: [
+                    { name: 'service_id', type: 'NUMBER(8)', constraints: ['PRIMARY KEY'] },
+                    { name: 'service_name', type: 'VARCHAR2(30)', constraints: ['NOT NULL'] },
+                    { name: 'price', type: 'NUMBER(10,2)', constraints: ['CHECK (price > 0)'] },
+                    { name: 'spa_service_flag', type: 'NUMBER(1)', constraints: ['CHECK (0 or 1)'] },
+                    { name: 'room_service_flag', type: 'NUMBER(1)', constraints: ['CHECK (0 or 1)'] },
+                    { name: 'restaurant_service_flag', type: 'NUMBER(1)', constraints: ['CHECK (0 or 1)'] },
+                    { name: 'laundry_service_flag', type: 'NUMBER(1)', constraints: ['CHECK (0 or 1)'] }
+                ]
+            },
+            Guest: {
+                columns: [
+                    { name: 'guest_id', type: 'NUMBER(8)', constraints: ['PRIMARY KEY'] },
+                    { name: 'first_name', type: 'VARCHAR2(20)', constraints: ['NOT NULL'] },
+                    { name: 'last_name', type: 'VARCHAR2(20)', constraints: ['NOT NULL'] },
+                    { name: 'date_of_birth', type: 'DATE', constraints: [] },
+                    { name: 'email', type: 'VARCHAR2(40)', constraints: ['NOT NULL'] }
+                ]
+            },
+            Rooms: {
+                columns: [
+                    { name: 'room_id', type: 'NUMBER(8)', constraints: ['PRIMARY KEY'] },
+                    { name: 'price_per_night', type: 'NUMBER(10)', constraints: ['CHECK (price_per_night > 0)'] },
+                    { name: 'room_type', type: 'VARCHAR2(20)', constraints: ['NOT NULL'] },
+                    { name: 'floor_number', type: 'NUMBER(3)', constraints: ['NOT NULL', 'CHECK (floor_number > 0)'] },
+                    { name: 'floor_section', type: 'VARCHAR2(20)', constraints: [] },
+                    { name: 'current_status', type: 'VARCHAR2(10)', constraints: ['NOT NULL'] }
+                ]
+            },
+            Reservation: {
+                columns: [
+                    { name: 'reservation_id', type: 'NUMBER(8)', constraints: ['PRIMARY KEY'] },
+                    { name: 'check_in', type: 'DATE', constraints: ['NOT NULL'] },
+                    { name: 'check_out', type: 'DATE', constraints: ['NOT NULL'] },
+                    { name: 'guest_id', type: 'NUMBER(8)', constraints: ['FOREIGN KEY → Guest(guest_id)'] },
+                    { name: 'room_id', type: 'NUMBER(8)', constraints: ['FOREIGN KEY → Rooms(room_id)'] }
+                ]
+            },
+            Payment: {
+                columns: [
+                    { name: 'payment_id', type: 'NUMBER(8)', constraints: ['PRIMARY KEY'] },
+                    { name: 'payment_date', type: 'DATE', constraints: ['NOT NULL'] },
+                    { name: 'amount', type: 'NUMBER(10,2)', constraints: ['NOT NULL', 'CHECK (amount > 0)'] },
+                    { name: 'payment_method', type: 'VARCHAR2(10)', constraints: ['NOT NULL'] },
+                    { name: 'guest_id', type: 'NUMBER(8)', constraints: ['NOT NULL', 'FOREIGN KEY → Guest(guest_id)'] }
+                ]
+            },
+            Email: {
+                columns: [
+                    { name: 'email', type: 'VARCHAR2(40)', constraints: ['PRIMARY KEY (with emp_id)'] },
+                    { name: 'emp_id', type: 'NUMBER(8)', constraints: ['PRIMARY KEY (with email)', 'FOREIGN KEY → Employee(employee_id)'] }
+                ]
+            },
+            Phone_Number: {
+                columns: [
+                    { name: 'p_number', type: 'NUMBER(10)', constraints: ['PRIMARY KEY (with emp_id)'] },
+                    { name: 'emp_id', type: 'NUMBER(8)', constraints: ['PRIMARY KEY (with p_number)', 'FOREIGN KEY → Employee(employee_id)'] }
+                ]
+            },
+            Service_Guest: {
+                columns: [
+                    { name: 'guest_id', type: 'NUMBER(8)', constraints: ['FOREIGN KEY → Guest(guest_id)'] },
+                    { name: 'service_id', type: 'NUMBER(8)', constraints: ['FOREIGN KEY → Service(service_id)'] }
+                ]
+            },
+            Service_Usage: {
+                columns: [
+                    { name: 'Ser_id', type: 'NUMBER(8)', constraints: ['PRIMARY KEY (with Use_Time)', 'FOREIGN KEY → Service(service_id)'] },
+                    { name: 'Use_Date', type: 'DATE', constraints: ['NOT NULL'] },
+                    { name: 'Use_Time', type: 'VARCHAR2(5)', constraints: ['PRIMARY KEY (with Ser_id)', 'NOT NULL'] }
+                ]
+            },
+            Phone: {
+                columns: [
+                    { name: 'Phone_number', type: 'NUMBER(10)', constraints: ['PRIMARY KEY (with Guest_id)', 'NOT NULL'] },
+                    { name: 'Guest_id', type: 'NUMBER(8)', constraints: ['PRIMARY KEY (with Phone_number)', 'FOREIGN KEY → Guest(guest_id)'] }
+                ]
+            }
+        };
+
+        function getConstraintClass(constraint) {
+            if (constraint.includes('PRIMARY KEY')) return 'constraint pk';
+            if (constraint.includes('FOREIGN KEY')) return 'constraint fk';
+            if (constraint.includes('NOT NULL')) return 'constraint nn';
+            return 'constraint';
+        }
+
+        function renderTables() {
+            const nav = document.getElementById('tableNav');
+            const views = document.getElementById('tableViews');
+
+            Object.keys(tables).forEach((tableName, index) => {
+                // Create navigation button
+                const btn = document.createElement('button');
+                btn.className = 'nav-btn' + (index === 0 ? ' active' : '');
+                btn.textContent = tableName;
+                btn.onclick = () => showTable(tableName);
+                nav.appendChild(btn);
+
+                // Create table view
+                const view = document.createElement('div');
+                view.className = 'table-view' + (index === 0 ? ' active' : '');
+                view.id = tableName;
+                
+                view.innerHTML = `
+                    <h2 class="table-title">${tableName}</h2>
+                    <div class="info-box">
+                        <h3>Table Information</h3>
+                        <p><strong>Total Columns:</strong> ${tables[tableName].columns.length}</p>
+                    </div>
+                    <div class="table-content">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Column Name</th>
+                                    <th>Data Type</th>
+                                    <th>Constraints</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${tables[tableName].columns.map(col => `
+                                    <tr>
+                                        <td><strong>${col.name}</strong></td>
+                                        <td class="datatype">${col.type}</td>
+                                        <td>
+                                            ${col.constraints.map(c => 
+                                                `<span class="${getConstraintClass(c)}">${c}</span>`
+                                            ).join(' ')}
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+                views.appendChild(view);
+            });
+        }
+
+        function showTable(tableName) {
+            // Update buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent === tableName);
+            });
+
+            // Update views
+            document.querySelectorAll('.table-view').forEach(view => {
+                view.classList.toggle('active', view.id === tableName);
+            });
+        }
+
+        renderTables();
+    </script>
+</body>
+</html>

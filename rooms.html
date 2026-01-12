@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rooms</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+  <header class="main-header">
+    <h1>Rooms Management</h1>
+    <p class="subtitle"><a href="{{ url_for('home') }}" style="color:white;">Home</a></p>
+  </header>
+
+  <main class="home-container">
+
+    <!-- VIEW -->
+    <section class="card">
+      <div class="card-header"><div class="card-title">All Rooms</div></div>
+      <div class="card-body table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Price/Night</th>
+              <th>Type</th>
+              <th>Floor #</th>
+              <th>Section</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in rooms %}
+            <tr>
+              <td>{{ r.room_id }}</td>
+              <td>{{ r.price_per_night }}</td>
+              <td>{{ r.room_type }}</td>
+              <td>{{ r.floor_number }}</td>
+              <td>{{ r.floor_section }}</td>
+              <td>{{ r.current_status }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ADD -->
+    <section class="card">
+      <div class="card-header"><div class="card-title">Add Room</div></div>
+      <div class="card-body">
+        <form action="{{ url_for('add_room') }}" method="POST">
+          <div class="form-group">
+            <label>Room ID</label>
+            <input type="number" name="room_id" min="1" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label>Price per Night</label>
+            <input type="number" name="price_per_night" min="0" step="0.01" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label>Room Type</label>
+            <input type="text" name="room_type" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label>Floor Number</label>
+            <input type="number" name="floor_number" min="0" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label>Floor Section</label>
+            <input type="text" name="floor_section" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label>Current Status</label>
+            <input type="text" name="current_status" class="form-control" required>
+          </div>
+
+          <div class="form-footer">
+            <button type="submit" class="btn btn-primary">Add Room</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- UPDATE -->
+    <section class="card">
+      <div class="card-header"><div class="card-title">Update Room</div></div>
+      <div class="card-body">
+        <form action="{{ url_for('update_room') }}" method="POST">
+
+          <div class="form-group">
+            <label>Room ID</label>
+            <input type="number" name="room_id" min="1" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label>Price per Night</label>
+            <input type="number" name="price_per_night" min="0" step="0.01" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label>Room Type</label>
+            <input type="text" name="room_type" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label>Floor Number</label>
+            <input type="number" name="floor_number" min="0" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label>Floor Section</label>
+            <input type="text" name="floor_section" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label>Current Status</label>
+            <input type="text" name="current_status" class="form-control" required>
+          </div>
+
+          <div class="form-footer">
+            <button type="submit" class="btn btn-success">Update Room</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- DELETE -->
+    <section class="card">
+      <div class="card-header"><div class="card-title">Delete Room</div></div>
+      <div class="card-body">
+        <form action="{{ url_for('delete_room') }}" method="POST">
+          <div class="form-group">
+            <label>Room ID</label>
+            <input type="number" name="room_id" min="1" class="form-control" required>
+          </div>
+          <div class="form-footer">
+            <button type="submit" class="btn btn-danger">Delete Room</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="main-footer">
+    <p>Hotel System © 2026</p>
+  </footer>
+</div>
+
+</body>
+</html>

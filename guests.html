@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Guests Management</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header class="main-header">
+  <h1>Guests Management</h1>
+  <p>Guests Records. <a href="{{ url_for('home') }}" style="color: white;">Home</a></p>
+</header>
+
+<main class="home-container">
+
+  <!-- VIEW DATA -->
+  <section class="card">
+    <h2>All Guests</h2>
+
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>Guest ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Date of Birth</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for g in guests %}
+          <tr>
+            <td>{{ g.guest_id }}</td>
+            <td>{{ g.first_name }}</td>
+            <td>{{ g.last_name }}</td>
+            <td>{{ g.date_of_birth }}</td>
+            <td>{{ g.email }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ADD DATA -->
+  <section class="card">
+    <h2>Add New Guest</h2>
+
+    <form action="{{ url_for('add_guest') }}" method="POST">
+      <div class="form-group">
+        <label>Guest ID</label>
+        <input type="number" name="guest_id" min="1" class="form-control" required>
+      </div>
+
+      <div class="form-group">
+        <label>First Name</label>
+        <input type="text" name="first_name" class="form-control" required>
+      </div>
+
+      <div class="form-group">
+        <label>Last Name</label>
+        <input type="text" name="last_name" class="form-control" required>
+      </div>
+
+      <div class="form-group">
+        <label>Date of Birth</label>
+        <input type="date" name="date_of_birth" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="text" name="email" class="form-control" required>
+      </div>
+
+      <div class="form-footer">
+        <button type="submit" class="btn btn-primary">Add Guest</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- UPDATE DATA -->
+  <section class="card">
+    <h2>Update Guest</h2>
+
+    <form action="{{ url_for('update_guest') }}" method="POST">
+      <div class="form-group">
+        <label>Guest ID to Update</label>
+        <input type="number" name="guest_id" min="1" class="form-control" required>
+      </div>
+
+      <div class="form-group">
+        <label>First Name (optional)</label>
+        <input type="text" name="first_name" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label>Last Name (optional)</label>
+        <input type="text" name="last_name" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label>Date of Birth (optional)</label>
+        <input type="date" name="date_of_birth" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label>Email (optional)</label>
+        <input type="text" name="email" class="form-control">
+      </div>
+
+      <div class="form-footer">
+        <button type="submit" class="btn btn-success">Update Guest</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- DELETE DATA -->
+  <section class="card">
+    <h2>Delete Guest</h2>
+
+    <form action="{{ url_for('delete_guest') }}" method="POST">
+      <div class="form-group">
+        <label>Guest ID to Delete</label>
+        <input type="number" name="guest_id" min="1" class="form-control" required>
+      </div>
+
+      <div class="form-footer">
+        <button type="submit" class="btn btn-danger">Delete Guest</button>
+      </div>
+    </form>
+  </section>
+
+</main>
+
+<footer class="main-footer">
+  <p>Hotel System © 2026</p>
+</footer>
+
+</body>
+</html>

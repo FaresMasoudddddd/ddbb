@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Employees Management</title>
+
+  <!-- IMPORTANT: Flask static CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header class="main-header">
+  <div class="container">
+    <h1>Employees Management</h1>
+    <p class="subtitle">Employee and Department Records</p>
+
+    <!-- NAV (use direct paths to avoid BuildError if endpoints names differ) -->
+    <div class="nav-container">
+      <a class="nav-btn" href="/">Home</a>
+      <a class="nav-btn" href="/guests">Guests</a>
+      <a class="nav-btn active" href="/employees">Employees</a>
+      <a class="nav-btn" href="/departments">Departments</a>
+      <a class="nav-btn" href="/rooms">Rooms</a>
+      <a class="nav-btn" href="/reservations">Reservations</a>
+      <a class="nav-btn" href="/services">Services</a>
+      <a class="nav-btn" href="/payments">Payments</a>
+      <a class="nav-btn" href="/reports">Reports</a>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- VIEW DATA -->
+  <section class="card">
+    <div class="card-header">
+      <div class="card-title">All Employees</div>
+    </div>
+
+    <div class="card-body">
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Hours Worked</th>
+              <th>Start Date</th>
+              <th>Hourly Rate</th>
+              <th>Date of Birth</th>
+              <th>Phone</th>
+              <th>Email</th>
+              <th>Supervisor</th>
+              <th>General Staff</th>
+              <th>Manager</th>
+              <th>Department</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for emp in employees %}
+            <tr>
+              <td>{{ emp.employee_id }}</td>
+              <td>{{ emp.emp_name }}</td>
+              <td>{{ emp.hours_worked }}</td>
+              <td>{{ emp.start_date }}</td>
+              <td>{{ emp.hourly_rate }}</td>
+              <td>{{ emp.emp_date_of_birth }}</td>
+              <td>{{ emp.phone }}</td>
+              <td>{{ emp.email }}</td>
+              <td>
+                {% if emp.super_name %}
+                  {{ emp.super_name }} (ID: {{ emp.super_id }})
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+              <td>{{ emp.general_staff_flag }}</td>
+              <td>{{ emp.manager_flag }}</td>
+              <td>
+                {% if emp.dep_name %}
+                  {{ emp.dep_name }} (ID: {{ emp.dep_id }})
+                {% else %}
+                  ID: {{ emp.dep_id }}
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+
+        </table>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ADD EMPLOYEE -->
+  <section class="card">
+    <div class="card-header">
+      <div class="card-title">Add New Employee</div>
+    </div>
+
+    <div class="card-body">
+      <form action="/employees/add" method="POST">
+
+        <div class="form-group">
+          <label>Employee ID</label>
+          <input type="number" name="employee_id" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" name="emp_first_name" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" name="emp_last_name" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label>Hours Worked</label>
+          <input type="number" name="hours_worked" min="1" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label>Start Date</label>
+          <input type="date" name="start_date" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label>Hourly Rate</label>
+          <input type="number" name="hourly_rate" min="1" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label>Date of Birth (optional)</label>
+          <input type="date" name="emp_date_of_birth" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="number" name="phone" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label>Email</label>
+          <input type="text" name="email" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label>Supervisor ID (optional)</label>
+          <input type="number" name="super_id" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label>General Staff Flag (0 or 1)</label>
+          <input type="number" name="general_staff_flag" min="0" max="1" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label>Manager Flag (0 or 1)</label>
+          <input type="number" name="manager_flag" min="0" max="1" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label>Department ID</label>
+          <input type="number" name="dep_id" class="form-control" required>
+        </div>
+
+        <div class="form-footer">
+          <button type="submit" class="btn btn-primary">Add Employee</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+
+  <!-- UPDATE EMPLOYEE -->
+  <section class="card">
+    <div class="card-header">
+      <div class="card-title">Update Employee</div>
+    </div>
+
+    <div class="card-body">
+      <form action="/employees/update" method="POST">
+
+        <div class="form-group">
+          <label>Employee ID (to update)</label>
+          <input type="number" name="employee_id" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" name="emp_first_name" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" name="emp_last_name" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label>Hours Worked</label>
+          <input type="number" name="hours_worked" min="1" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label>Start Date</label>
+          <input type="date" name="start_date" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label>Hourly Rate</label>
+          <input type="number" name="hourly_rate" min="1" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label>Date of Birth (optional)</label>
+          <input type="date" name="emp_date_of_birth" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="number" name="phone" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label>Email</label>
+          <input type="text" name="email" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label>Supervisor ID (optional)</label>
+          <input type="number" name="super_id" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label>General Staff Flag (0 or 1)</label>
+          <input type="number" name="general_staff_flag" min="0" max="1" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label>Manager Flag (0 or 1)</label>
+          <input type="number" name="manager_flag" min="0" max="1" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label>Department ID</label>
+          <input type="number" name="dep_id" class="form-control" required>
+        </div>
+
+        <div class="form-footer">
+          <button type="submit" class="btn btn-success">Update Employee</button>
+        </div>
+
+      </form>
+    </div>
+  </section>
+
+
+  <!-- DELETE EMPLOYEE -->
+  <section class="card">
+    <div class="card-header">
+      <div class="card-title">Delete Employee</div>
+    </div>
+
+    <div class="card-body">
+      <form action="/employees/delete" method="POST">
+        <div class="form-group">
+          <label>Employee ID (to delete)</label>
+          <input type="number" name="employee_id" class="form-control" required>
+        </div>
+
+        <div class="form-footer">
+          <button type="submit" class="btn btn-danger">Delete Employee</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer class="main-footer">
+  <p>Hotel System © 2026</p>
+</footer>
+
+</body>
+</html>
